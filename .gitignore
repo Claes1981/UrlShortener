@@ -480,3 +480,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Commit messages by the @firstpick/pi-prompts-git-pr Pi extension
+dev/COMMIT/
