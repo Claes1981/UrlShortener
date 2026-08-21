@@ -4,6 +4,8 @@ A minimal URL shortener API: create a short code for a long URL and redirect fro
 
 Built as the course project for **Skalbara Molnapplikationer** (scalable cloud applications). The app is intentionally small — the focus of the course is the infrastructure around it: running it on Azure both as an App Service web app and as a container (Azure Container Apps), provisioned with Bicep, deployed through a GitHub Actions pipeline, and designed with scaling in mind.
 
+Full documentation: [docs/TUTORIAL.md](docs/TUTORIAL.md).
+
 ## Endpoints
 
 | Method | Path      | Description                          |
