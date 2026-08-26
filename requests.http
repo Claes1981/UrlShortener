@@ -1,4 +1,5 @@
 @host = http://localhost:5001
+@cloud = https://app-clo25-claes.azurewebsites.net
 
 ### Root - returns a small JSON object
 GET {{host}}/
@@ -8,3 +9,9 @@ GET {{host}}/health
 
 ### Info - which machine answered
 GET {{host}}/info
+
+### Cloud root - same app, different machine
+GET {{cloud}}/
+
+### Cloud health - should always return 200 OK
+GET {{cloud}}/health
