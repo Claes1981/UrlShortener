@@ -16,7 +16,7 @@ Full documentation: [docs/TUTORIAL.md](docs/TUTORIAL.md).
 ## Repository layout
 
 ```
-src/UrlShortener/            The ASP.NET Core minimal API app
+src/UrlShortener.Api/        The ASP.NET Core minimal API app
 tests/UrlShortener.Tests/    xUnit endpoint tests
 requests.http                Manual endpoint requests (send from any editor)
 AGENTS.md                    Constraints for AI coding agents working in this repo
@@ -28,7 +28,7 @@ Prerequisites: .NET 10 SDK.
 
 ```sh
 dotnet build       # build the app and tests
-dotnet run --project src/UrlShortener   # http://localhost:5001
+dotnet run --project src/UrlShortener.Api   # http://localhost:5001
 dotnet test        # run the test suite
 ```
 
