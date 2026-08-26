@@ -16,3 +16,7 @@ az appservice plan list --resource-group rg-clo25-claes --query "[].{Name:name, 
 az appservice plan update --name asp-clo25-claes --resource-group rg-clo25-claes --number-of-workers 3
 
 az appservice plan list --resource-group rg-clo25-claes --query "[].{Name:name, Tier:sku.name, Instances:sku.capacity}" --output table
+
+az webapp config set --resource-group rg-clo25-claes --name app-clo25-claes --generic-configurations health_check_path="/health"
+
+az webapp show --resource-group rg-clo25-claes --name app-clo25-claes --query siteConfig.healthCheckPath --output tsv
