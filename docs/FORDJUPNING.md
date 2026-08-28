@@ -57,4 +57,4 @@ Done before the resource group was torn down, as the exercise requires the app t
 - The browser gives the same machine every time: App Service sets an `ARRAffinity` cookie by default that binds the browser to one instance, so an app that keeps something in memory does not lose it between requests. `curl` does not store cookies, so it sees all instances.
 - The live configuration shows `"loadBalancing": "LeastRequests"` — the platform sends each request to the instance handling the fewest. Nothing I configured; that is what PaaS means in practice.
 
-Full version: TUTORIAL.md, section "Seeing the load balancing with my own eyes".
+Full version: [TUTORIAL.md](TUTORIAL.md), section "Seeing the load balancing with my own eyes".

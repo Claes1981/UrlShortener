@@ -44,7 +44,7 @@ One sentence per infrastructure choice (the assignment asks *why* each tool fits
 - **Basic B1 tier** — the cheapest tier that allows more than one instance; Free and Shared are limited to a single one.
 - **Three instances** — the most the Basic tier allows, and enough to prove that the app survives an instance dying.
 - **Westeurope instead of Swedencentral** — Sweden Central had no free B1 capacity when I tried; my teacher approved the change (more below).
-- **`scripts/lab2.sh`** — my own script with every deploy command, so rebuilding the whole Azure part takes a few minutes; the assignment asks for at least one own script.
+- **[`scripts/lab2.sh`](../scripts/lab2.sh)** — my own script with every deploy command, so rebuilding the whole Azure part takes a few minutes; the assignment asks for at least one own script.
 
 ## Deploying to App Service (Lab 02)
 
@@ -56,7 +56,7 @@ All Azure resources carry the course naming pattern `what-clo25-myname`:
 | App Service plan | `asp-clo25-claes` | the compute: B1 (Basic), Linux, Westeurope |
 | Web app | `app-clo25-claes` | the app itself, runtime `DOTNETCORE:10.0` |
 
-Everything is in `scripts/lab2.sh`, in this order:
+Everything is in [`scripts/lab2.sh`](../scripts/lab2.sh), in this order:
 
 1. `az group create` — create the resource group
 2. `az appservice plan create --sku B1 --is-linux` — create the plan
