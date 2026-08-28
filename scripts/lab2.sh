@@ -1,22 +1,73 @@
 #!/usr/bin/env bash
-az group create --name rg-clo25-claes --location westeurope
+# Lab 02: deploy UrlShortener to Azure App Service (week 35)
+# Recreates rg-clo25-claes end-to-end; run once, watch it go.
+set -euo pipefail
 
-az appservice plan create --name asp-clo25-claes --resource-group rg-clo25-claes --location westeurope --sku B1 --is-linux
+# Works from any directory: the repository root is one level above this script
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-az webapp create --name app-clo25-claes --resource-group rg-clo25-claes --plan asp-clo25-claes --runtime "DOTNETCORE:10.0"
+GROUP="rg-clo25-claes"
+PLAN="asp-clo25-claes"
+APP="app-clo25-claes"
+URL="https://$APP.azurewebsites.net"
+LOCATION="westeurope"
+SKU="B1"
+INSTANCES=3
+APP_ZIP="$ROOT/artifacts/app.zip"
+PLAN_TABLE='{Name:name, Tier:sku.name, Instances:sku.capacity}'
 
-dotnet publish src/UrlShortener.Api --configuration Release --output artifacts/publish
+provision() {
+  az group create --name "$GROUP" --location "$LOCATION"
+  az appservice plan create \
+    --name "$PLAN" --resource-group "$GROUP" \
+    --location "$LOCATION" --sku "$SKU" --is-linux
+  az webapp create \
+    --name "$APP" --resource-group "$GROUP" \
+    --plan "$PLAN" --runtime "DOTNETCORE:10.0"
+}
 
-az webapp deploy --resource-group rg-clo25-claes --name app-clo25-claes --src-path artifacts/app.zip --type zip
+build() {
+  # UrlShortener.Api.csproj zips the publish output to artifacts/app.zip
+  # (ZipPublishOutput target), so one command builds and packages.
+  dotnet publish "$ROOT/src/UrlShortener.Api" -c Release \
+    -o "$ROOT/artifacts/publish"
+}
 
-curl -s -o /dev/null -w "%{http_code}\n" https://app-clo25-claes.azurewebsites.net/health
+deploy() {
+  az webapp deploy --resource-group "$GROUP" --name "$APP" \
+    --src-path "$APP_ZIP" --type zip
+}
 
-az appservice plan list --resource-group rg-clo25-claes --query "[].{Name:name, Tier:sku.name, Instances:sku.capacity}" --output table
+verify_health() {
+  local status
+  status="$(curl --silent --output /dev/null --write-out "%{http_code}" \
+    "$URL/health")"
+  echo "health: $status"
+  if [[ "$status" != "200" ]]; then
+    echo "expected 200 from $URL/health, got $status" >&2
+    exit 1
+  fi
+}
 
-az appservice plan update --name asp-clo25-claes --resource-group rg-clo25-claes --number-of-workers 3
+configure_health_check() {
+  az webapp config set --resource-group "$GROUP" --name "$APP" \
+    --generic-configurations health_check_path="/health"
+  az webapp show --resource-group "$GROUP" --name "$APP" \
+    --query siteConfig.healthCheckPath --output tsv
+}
 
-az appservice plan list --resource-group rg-clo25-claes --query "[].{Name:name, Tier:sku.name, Instances:sku.capacity}" --output table
+scale_out() {
+  az appservice plan list --resource-group "$GROUP" \
+    --query "[].$PLAN_TABLE" --output table
+  az appservice plan update --name "$PLAN" --resource-group "$GROUP" \
+    --number-of-workers "$INSTANCES"
+  az appservice plan list --resource-group "$GROUP" \
+    --query "[].$PLAN_TABLE" --output table
+}
 
-az webapp config set --resource-group rg-clo25-claes --name app-clo25-claes --generic-configurations health_check_path="/health"
-
-az webapp show --resource-group rg-clo25-claes --name app-clo25-claes --query siteConfig.healthCheckPath --output tsv
+provision
+build
+deploy
+verify_health
+scale_out
+configure_health_check
