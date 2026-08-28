@@ -24,11 +24,19 @@ dotnet test    # run the tests
 dotnet run --project src/UrlShortener.Api # start the app on http://localhost:5001
 ```
 
-The ports are fixed by the course: 5001 (HTTP) and 7001 (HTTPS). With the app running, this should print 200:
+The course fixes two local ports, 5001 for HTTP and 7001 for HTTPS, but the command above only opens the first one: a plain `dotnet run` starts the first profile in `launchSettings.json` (the `http` profile), which listens on 5001 alone. So while the app is running, this should print 200:
 
 ```bash
 curl http://localhost:5001/health
 ```
+
+Port 7001 stays closed until you start the other profile on purpose:
+
+```bash
+dotnet run --project src/UrlShortener.Api --launch-profile https
+```
+
+That profile serves `https://localhost:7001` with the self-signed development certificate, so `curl https://localhost:7001/health` fails with an SSL error until you trust the certificate once (`dotnet dev-certs https --trust`) or pass `-k` to curl.
 
 There is also a `requests.http` in the root of the repository, runnable from the editor, that talks to both the local app and the app in Azure from the same file.
 
