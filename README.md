@@ -1,47 +1,21 @@
 # UrlShortener
 
-A minimal URL shortener API: create a short code for a long URL and redirect from the short URL back to the original.
+A minimal .NET 10 web app for a URL shortener service. It exposes a few read-only endpoints for now; the shortening feature arrives later in the course, once the scaling design is settled.
 
 Built as the course project for **Skalbara Molnapplikationer** (scalable cloud applications). The app is intentionally small — the focus of the course is the infrastructure around it: running it on Azure both as an App Service web app and as a container (Azure Container Apps), provisioned with Bicep, deployed through a GitHub Actions pipeline, and designed with scaling in mind.
 
-Full documentation: [docs/TUTORIAL.md](docs/TUTORIAL.md).
-
-## Endpoints
-
-| Method | Path      | Description                          |
-| ------ | --------- | ------------------------------------ |
-| GET    | `/`       | JSON status object                   |
-| GET    | `/health` | Health check used by cloud tooling   |
+Full documentation: [docs/TUTORIAL.md](docs/TUTORIAL.md) — the endpoints, local development, deployment and scaling decisions, written to be followed by someone who has never seen the project or Azure before.
 
 ## Repository layout
 
 ```
 src/UrlShortener.Api/        The ASP.NET Core minimal API app
 tests/UrlShortener.Tests/    xUnit endpoint tests
+docs/TUTORIAL.md             The step-by-step documentation
+docs/FORDJUPNING.md          Deep-dive work log
 requests.http                Manual endpoint requests (send from any editor)
+scripts/lab2.sh              The Lab 02 deploy script (App Service, 3 instances)
 AGENTS.md                    Constraints for AI coding agents working in this repo
-```
-
-## Local development
-
-Prerequisites: .NET 10 SDK.
-
-```sh
-dotnet build       # build the app and tests
-dotnet run --project src/UrlShortener.Api   # http://localhost:5001
-dotnet test        # run the test suite
-```
-
-Ports are fixed by the course: **5001** (HTTP) and **7001** (HTTPS). For the HTTPS profile to work, trust the development certificate once:
-
-```sh
-dotnet dev-certs https --trust
-```
-
-Then verify manually:
-
-```sh
-curl http://localhost:5001/health
 ```
 
 ## Course requirements (status)
@@ -52,5 +26,5 @@ The final assignment is the app running twice in Azure (App Service + Container 
 - [ ] Dockerfile for the container build
 - [ ] Bicep templates for both deployments
 - [ ] GitHub Actions workflows building and deploying to Azure
-- [ ] Shell script(s) automating a deployment step
+- [x] Shell script(s) automating a deployment step
 - [ ] `docs/TUTORIAL.md` — the step-by-step documentation
