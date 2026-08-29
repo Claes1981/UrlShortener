@@ -64,23 +64,23 @@ All Azure resources carry the course naming pattern `what-clo25-myname`:
 | App Service plan | `asp-clo25-claes` | the compute: B1 (Basic), Linux, Westeurope |
 | Web app | `app-clo25-claes` | the app itself, runtime `DOTNETCORE:10.0` |
 
-Everything is in [`scripts/lab2.sh`](../scripts/lab2.sh), in this order:
+Everything is in [`scripts/lab2.sh`](../scripts/lab2.sh), which runs these steps in order. `<group>`, `<plan>` and `<app>` are the three names from the table above — replace them with your own names before you run them:
 
-1. `az group create` — create the resource group
-2. `az appservice plan create --sku B1 --is-linux` — create the plan
-3. `az webapp create --runtime "DOTNETCORE:10.0"` — create the web app
-4. `dotnet publish` — build the app; an MSBuild target zips the result to `artifacts/app.zip`
-5. `az webapp deploy --type zip` — upload the zip
-6. `curl https://app-clo25-claes.azurewebsites.net/health` — check that it answers 200
-7. `az appservice plan update --number-of-workers 3` — scale out to three instances
-8. `az webapp config set --generic-configurations health_check_path="/health"` — turn on the platform's health check
-9. `az webapp show --query siteConfig.healthCheckPath` — verify that it is set
+1. `az group create --name <group> --location westeurope` — create the resource group
+2. `az appservice plan create --name <plan> --resource-group <group> --location westeurope --sku B1 --is-linux` — create the plan
+3. `az webapp create --name <app> --plan <plan> --resource-group <group> --runtime "DOTNETCORE:10.0"` — create the web app
+4. `dotnet publish src/UrlShortener.Api -c Release -o artifacts/publish` — build the app; an MSBuild target zips the result to `artifacts/app.zip`
+5. `az webapp deploy --name <app> --resource-group <group> --src-path artifacts/app.zip --type zip` — upload the zip
+6. `curl https://<app>.azurewebsites.net/health` — check that it answers 200
+7. `az appservice plan update --name <plan> --resource-group <group> --number-of-workers 3` — scale out to three instances
+8. `az webapp config set --name <app> --resource-group <group> --generic-configurations health_check_path="/health"` — turn on the platform's health check
+9. `az webapp show --name <app> --resource-group <group> --query siteConfig.healthCheckPath` — verify that it is set
 
 After the lecture I tear it down again, because it costs money every hour it runs and nothing is lost — the code, the tests and this tutorial live in the repository, and Azure is the replaceable part:
 
 ```bash
-az group delete --name rg-clo25-claes --yes --no-wait
-az group exists --name rg-clo25-claes   # prints false
+az group delete --name <group> --yes --no-wait
+az group exists --name <group>   # prints false
 ```
 
 ### What went wrong
