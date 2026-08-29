@@ -54,7 +54,7 @@ One sentence per infrastructure choice (the assignment asks *why* each tool fits
 - **Westeurope instead of Swedencentral** — Sweden Central had no free B1 capacity when I tried; my teacher approved the change (more below).
 - **[`scripts/lab2.sh`](../scripts/lab2.sh)** — my own script with every deploy command, so rebuilding the whole Azure part takes a few minutes; the assignment asks for at least one own script.
 
-## Deploying to App Service (Lab 02)
+## Provisioning and deploying to App Service (Lab 02)
 
 All Azure resources carry the course naming pattern `what-clo25-myname`:
 
