@@ -483,3 +483,6 @@ $RECYCLE.BIN/
 
 # Commit messages by the @firstpick/pi-prompts-git-pr Pi extension
 dev/COMMIT/
+
+# Local LLM wiki knowledge base
+.llm-wiki/
