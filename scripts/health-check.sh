@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Checks that the app responds with 200 on the given URL.
-# Usage: ./scripts/health-check.sh https://my-app.azurewebsites.net/health
+# Usage: ./scripts/health-check.sh <url> [attempts]
 
 set -euo pipefail
 
 URL="${1:?Provide the URL as the first argument}"
-ATTEMPTS=10
+ATTEMPTS="${2:-10}"
 DELAY=5
 
 echo "Checking $URL"
