@@ -18,7 +18,8 @@ app.MapGet("/health", () => Results.Ok(new
 app.MapGet("/info", () => new
 {
     app = "UrlShortener",
-    machine = Environment.MachineName
+    machine = Environment.MachineName,
+    description = "Get a shorter version of a long url."
 });
 
 app.Run();
