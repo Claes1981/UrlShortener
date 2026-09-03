@@ -486,3 +486,5 @@ dev/COMMIT/
 
 # Local LLM wiki knowledge base
 .llm-wiki/
+publish-profile.xml
+*.publishsettings
