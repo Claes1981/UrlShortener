@@ -488,3 +488,4 @@ dev/COMMIT/
 .llm-wiki/
 publish-profile.xml
 *.publishsettings
+infra/*.json
