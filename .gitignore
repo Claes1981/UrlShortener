@@ -489,3 +489,4 @@ dev/COMMIT/
 publish-profile.xml
 *.publishsettings
 infra/*.json
+azure-credentials.json
