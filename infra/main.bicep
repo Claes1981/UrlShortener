@@ -29,7 +29,7 @@ var healthCheckPath = '/health'
 resource plan 'Microsoft.Web/serverfarms@2025-03-01' = {
   name: planName
   location: location
-  kind: 'linux' // what --islinux made the plan to in week 35
+  kind: 'linux' // what --is-linux made the plan to in week 35
   sku: {
     name: skuName
     capacity: instanceCount
