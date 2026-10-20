@@ -1,6 +1,6 @@
 # Tutorial
 
-I try to write this tutorial the same day as I do the work or shortly thereafter, so the details are relatively fresh. It should be possible to follow it step by step, even if you have never seen the project or Azure before.
+It should be possible to follow this tutorial step by step, even if you have never seen the project or Azure before.
 
 ## What the app is
 
