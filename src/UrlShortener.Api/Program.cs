@@ -19,7 +19,7 @@ app.MapGet("/info", () => new
 {
     app = "UrlShortener",
     machine = Environment.MachineName,
-    description = "Get a shorter version of a long url."
+    description = "Get a shorter version of a (very) long url."
 });
 
 app.Run();
