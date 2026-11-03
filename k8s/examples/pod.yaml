@@ -7,6 +7,6 @@ metadata:
 spec:
   containers:
     - name: beacon
-      image: beacon:latest
+      image: beacon:v1
       ports:
         - containerPort: 8080
