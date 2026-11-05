@@ -1,10 +1,13 @@
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.ConfigureHttpJsonOptions(options =>
+    options.SerializerOptions.WriteIndented = true);
 var app = builder.Build();
 
 app.MapGet("/", () => new
 {
     app = "UrlShortener",
-    status = "running"
+    status = "running",
+    version = "2"
 });
 
 // Health check. Used by App Service (week 35), by health-check.sh (week 36)
@@ -12,7 +15,7 @@ app.MapGet("/", () => new
 app.MapGet("/health", () => Results.Ok(new
 {
     status = "healthy",
-    version = "1.0.0"
+    version = "2.0.0"
 }));
 
 app.MapGet("/info", () => new
