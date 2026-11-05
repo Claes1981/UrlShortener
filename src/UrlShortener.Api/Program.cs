@@ -7,7 +7,7 @@ app.MapGet("/", () => new
 {
     app = "UrlShortener",
     status = "running",
-    version = "2"
+    version = "3"
 });
 
 // Health check. Used by App Service (week 35), by health-check.sh (week 36)
@@ -15,13 +15,16 @@ app.MapGet("/", () => new
 app.MapGet("/health", () => Results.Ok(new
 {
     status = "healthy",
-    version = "2.0.0"
+    version = "3.0.0"
 }));
 
 app.MapGet("/info", () => new
 {
     app = "UrlShortener",
     machine = Environment.MachineName,
+    environment = Environment.GetEnvironmentVariable("BEACON_ENVIRONMENT") ?? "unset",
+    message = Environment.GetEnvironmentVariable("BEACON_MESSAGE") ?? "unset",
+    apiKeySet = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("BEACON_API_KEY")),
     description = "Get a shorter version of a (very) long url."
 });
 
