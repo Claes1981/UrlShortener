@@ -4,4 +4,4 @@ metadata:
   name: beacon-config
 data:
   BEACON_ENVIRONMENT: "local"
-  BEACON_MESSAGE: "Hello from the cluster"
+  BEACON_MESSAGE: "Hello again"
