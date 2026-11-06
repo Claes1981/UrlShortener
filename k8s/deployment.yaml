@@ -17,6 +17,9 @@ spec:
           image: beacon:v3
           ports:
             - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: beacon-config
           resources:
             requests:
               cpu: 100m
