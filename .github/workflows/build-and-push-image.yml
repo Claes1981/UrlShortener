@@ -42,7 +42,7 @@ jobs:
           owner=$(echo "${{ github.repository_owner }}" | tr 'A-Z' 'a-z')
           image="ghcr.io/$owner/beacon:${GITHUB_SHA::7}"
           docker buildx build \
-            --file src/Beacon.Api/Dockerfile \
+            --file src/UrlShortener.Api/Dockerfile \
             --platform linux/amd64,linux/arm64 \
             --tag "$image" \
             --push \
