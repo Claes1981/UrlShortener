@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: beacon
-          image: beacon:v3
+          image: ghcr.io/claes1981/beacon:fd668ec
           ports:
             - containerPort: 8080
           envFrom:
