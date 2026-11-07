@@ -1,14 +1,14 @@
-# Course constraints (Skalbara molnapplikationer)
+# Course constraints (Kubernetes, 2026)
 
-- Keep the `src/UrlShortener.Api` path, solution name `UrlShortener.slnx`, and `public partial class Program { }` unchanged — the pipeline (v36), Dockerfile (v38), and App Service (v35) all depend on them. Do not rename.
-- `GET /health` MUST NOT be removed or moved; cloud health checks call it (body changes are fine — tests check the status code).
-- Course-fixed local ports: http 5001, https 7001; container listens on 8080 (v38). Do not change launchSettings ports. Plain `dotnet run` opens 5001 only (first profile) — 7001 needs `--launch-profile https`.
-- Keep the app boring: a few simple endpoints are enough. Infrastructure is graded, app features are not.
-- Course instructions reference the template app "Beacon" — always adapt names and paths to UrlShortener.
-- Commit messages: Conventional Commits, imperative mood, English.
-- `dev/` is local scratch (commit message drafts); never commit it (`dev/COMMIT/` is git-ignored).
-- Docs: docs/TUTORIAL.md is the primary document — the course requires updating it the same day the work is done. README.md stays a short pointer; do not duplicate tutorial content. Fördjupning answers live in docs/FORDJUPNING.md (course numbers them continuously).
-- Short-code storage: keep it open and stateless until week 39 (Redis). No in-memory or per-instance storage — instances must stay interchangeable.
-- Azure: rg-clo25-claes is in westeurope — teacher-approved (swedencentral had no B1 capacity); do not revert it.
-- Azure: resources are deleted after each session to stop billing (stopping the app does not stop the plan); scripts/lab2.sh recreates rg-clo25-claes end-to-end.
-- This sandbox: dotnet build/test fail with MSB1025 — ask the user to run them locally. Tool output can contain display artifacts (flattened multiline strings, spurious indentation); verify with git or a second read before acting.
+- Keep the `src/UrlShortener.Api` path, solution name `UrlShortener.slnx`, and `public partial class Program { }` unchanged — the Dockerfile and build workflow depend on them.
+- `GET /health` MUST NOT be removed or moved; cloud health checks and the K8s liveness/readiness probes call it.
+- Image and all cluster objects are named `beacon` by course convention; the app code stays UrlShortener.
+- Keep the app boring: an API with /health is enough. The course grades Kubernetes, not the app.
+- The K8s deliverable is README.md (architecture + picture + link to a green pipeline run). TUTORIAL.md and FORDJUPNING.md belong to the submitted SkalMoln course — do not extend them.
+- The SkalMoln pipeline push triggers (deploy.yml, deploy-container.yml) are commented out on purpose — do not re-enable until the K8s course is done.
+- Never commit real secrets; docs/secret.example.yaml is the example. The Helm chart owns the cluster objects — no kubectl apply on chart-owned objects.
+- Local cluster: k3d `clo25` (rancher/k3s:v1.36.4-k3s1), port 8080 forwarded; local dev ports http 5001 / https 7001.
+- Commit messages: Herald style (emoji + type(scope): subject, body explains why), English.
+- `dev/` is local scratch (commit message drafts); never commit it.
+- Azure: use westeurope (Module 04 recommendation); delete resources after each session to stop billing (AKS ≈ 1.50 SEK/hour).
+- This sandbox: dotnet build/test fail with MSB1025 — ask the user to run them locally. Verify tool output with git or a second read before acting.
