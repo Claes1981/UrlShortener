@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: beacon
+  name: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: beacon
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: beacon
+        app: {{ .Release.Name }}
     spec:
       imagePullSecrets:
         - name: ghcr-secret
       containers:
-        - name: beacon
+        - name: {{ .Release.Name }}
           image: "ghcr.io/claes1981/beacon:{{ .Values.imageTag }}"
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: beacon-config
+                name: {{ .Release.Name }}-config
             - secretRef:
                 name: beacon-secret
           resources:
