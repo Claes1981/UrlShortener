@@ -1,2 +1,3 @@
 replicaCount: 3
 imageTag: "543f4fa"
+ingressHost: ""
