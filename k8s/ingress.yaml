@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: beacon
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
     - http:
         paths:
