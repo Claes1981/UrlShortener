@@ -6,6 +6,33 @@ Built as the course project for **Skalbara Molnapplikationer** (scalable cloud a
 
 Full documentation: [docs/TUTORIAL.md](docs/TUTORIAL.md) — the endpoints, local development, and the step-by-step for provisioning, deploying, scaling, and verifying both tracks.
 
+## How to run it
+
+1. Create the pull secret, with a GitHub token that has only `read:packages`. The first line waits for you to
+   paste the token:
+
+   ```bash
+   printf 'GitHub token: ' && read -rs GHCR_TOKEN && echo
+
+   kubectl create secret docker-registry ghcr-secret \
+     --docker-server=ghcr.io \
+     --docker-username=claes1981 \
+     --docker-password=$GHCR_TOKEN
+   ```
+
+2. Create the app's secret:
+
+   ```bash
+   kubectl create secret generic beacon-secret \
+     --from-literal=BEACON_API_KEY='your-key'
+   ```
+
+3. Install the chart:
+
+   ```bash
+   helm upgrade --install beacon ./charts/beacon
+   ```
+
 ## Repository layout
 
 ```
