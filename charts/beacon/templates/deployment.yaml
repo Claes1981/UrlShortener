@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: beacon
 spec:
-  replicas: 3
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: beacon
