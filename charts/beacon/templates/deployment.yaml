@@ -16,7 +16,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: beacon
-          image: ghcr.io/claes1981/beacon:543f4fa
+          image: "ghcr.io/claes1981/beacon:{{ .Values.imageTag }}"
           ports:
             - containerPort: 8080
           envFrom:
