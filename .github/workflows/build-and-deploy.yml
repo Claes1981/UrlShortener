@@ -1,4 +1,4 @@
-name: Build and Push Image
+name: Build and Deploy
 
 on:
   workflow_dispatch:
@@ -13,6 +13,10 @@ permissions:
   contents: read
   packages: write
 
+env:
+  RESOURCE_GROUP: rg-clo25-claes
+  CLUSTER: aks-clo25-claes
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -20,6 +24,9 @@ concurrency:
 jobs:
   build-and-push:
     runs-on: ubuntu-24.04
+    concurrency:
+      group: build-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Check Out the Code
         uses: actions/checkout@v7
@@ -48,3 +55,40 @@ jobs:
             --push \
             .
           echo "Pushed $image"
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-24.04
+    concurrency:
+      group: deploy-${{ github.ref }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check Out the Code
+        uses: actions/checkout@v7
+
+      - name: Sign In to Azure
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Connect to the Cluster
+        run: |
+          az aks get-credentials \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$CLUSTER"
+
+      - name: Set Up Helm 4
+        uses: azure/setup-helm@v5
+        with:
+          version: v4.3.0
+
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install beacon ./charts/beacon \
+            --set imageTag="${GITHUB_SHA::7}" \
+            --wait \
+            --timeout 5m
