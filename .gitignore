@@ -481,8 +481,11 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-# Commit messages by the @firstpick/pi-prompts-git-pr Pi extension
-dev/COMMIT/
+# Local scratch: commit message drafts and mirror diffs (never committed)
+dev/
+
+# Pi agent local settings
+.pi/
 
 # Local LLM wiki knowledge base
 .llm-wiki/
