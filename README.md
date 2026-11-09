@@ -32,6 +32,7 @@ Full documentation: [docs/TUTORIAL.md](docs/TUTORIAL.md) — the endpoints, loca
    ```bash
    helm upgrade --install beacon ./charts/beacon
    ```
+A green run of the pipeline: [bump beacon to version 5](https://github.com/Claes1981/UrlShortener/actions/runs/42523216122)
 
 ## Repository layout
 
