@@ -1,0 +1,151 @@
+<mxfile host="app.diagrams.net" modified="2026-11-12T00:00:00.000Z" agent="url-shortener" version="32.6.10">
+  <diagram id="beacon-aks-architecture" name="Beacon on AKS">
+    <mxGraphModel dx="1422" dy="922" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1440" pageHeight="920" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Client -->
+        <mxCell id="client" value="Client (Internet)" style="shape=cloud;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="140" width="200" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- GHCR -->
+        <mxCell id="ghcr" value="GHCR&#160;&#160;&#160;ghcr.io/claes1981/beacon" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="60" width="190" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Cluster boundary -->
+        <mxCell id="cluster" value="AKS cluster: aks-clo25-claes — westeurope, Kubernetes 1.36" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;container=1;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1;dashed=1;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="300" y="40" width="880" height="840" as="geometry" />
+        </mxCell>
+
+        <!-- Control plane -->
+        <mxCell id="cp" value="Control plane (managed by Azure)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;container=1;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;spacingTop=6;" vertex="1" parent="cluster">
+          <mxGeometry x="30" y="60" width="280" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="apiserver" value="Kubernetes API server" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="cp">
+          <mxGeometry x="20" y="50" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="etcd" value="etcd (cluster state)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="cp">
+          <mxGeometry x="20" y="120" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="scheduler" value="Scheduler" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="cp">
+          <mxGeometry x="20" y="190" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cm" value="Controller manager" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="cp">
+          <mxGeometry x="20" y="260" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Node -->
+        <mxCell id="node" value="Node: Standard_D2as_v7 (2 vCPU, 8 GiB) — one node pool" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;container=1;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;spacingTop=6;" vertex="1" parent="cluster">
+          <mxGeometry x="360" y="60" width="500" height="750" as="geometry" />
+        </mxCell>
+
+        <!-- Node agents -->
+        <mxCell id="kubelet" value="kubelet" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;" vertex="1" parent="node">
+          <mxGeometry x="20" y="50" width="145" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="kubeproxy" value="kube-proxy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;" vertex="1" parent="node">
+          <mxGeometry x="180" y="50" width="145" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="containerd" value="containerd" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;" vertex="1" parent="node">
+          <mxGeometry x="340" y="50" width="140" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- Entry: ingress + public IP -->
+        <mxCell id="ingress" value="Ingress beacon (path /)&#160;→&#160;Traefik LoadBalancer Service&#160;→&#160;public IP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;fontStyle=1;" vertex="1" parent="node">
+          <mxGeometry x="20" y="130" width="460" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Traefik controller -->
+        <mxCell id="traefik" value="Traefik ingress controller (namespace: traefik)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="node">
+          <mxGeometry x="20" y="220" width="460" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- Service -->
+        <mxCell id="service" value="Service beacon — ClusterIP, port 80 → targetPort 8080" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;fontStyle=1;" vertex="1" parent="node">
+          <mxGeometry x="20" y="300" width="460" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Deployment label -->
+        <mxCell id="deploylabel" value="Deployment beacon (replicas: 3, namespace: default)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;fontStyle=1;" vertex="1" parent="node">
+          <mxGeometry x="90" y="375" width="320" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Pods -->
+        <mxCell id="pod1" value="Pod 1&#160;&#160;beacon container&#160;:8080" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="node">
+          <mxGeometry x="20" y="410" width="145" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="pod2" value="Pod 2&#160;&#160;beacon container&#160;:8080" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="node">
+          <mxGeometry x="180" y="410" width="145" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="pod3" value="Pod 3&#160;&#160;beacon container&#160;:8080" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="node">
+          <mxGeometry x="340" y="410" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Config + secrets -->
+        <mxCell id="configmap" value="ConfigMap beacon-config&#160;&#160;BEACON_ENVIRONMENT, BEACON_MESSAGE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="node">
+          <mxGeometry x="20" y="530" width="225" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="secret" value="Secret beacon-secret&#160;&#160;BEACON_API_KEY&#160;&#160;+ pull secret ghcr-secret&#160;&#160;(secrets are created with kubectl, not by the chart)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="node">
+          <mxGeometry x="260" y="530" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ===== Edges ===== -->
+
+        <!-- Client to ingress -->
+        <mxCell id="e-client-ingress" value="HTTPS (host / path)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#6c8ebf;fontSize=11;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="client" target="ingress">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Ingress to traefik -->
+        <mxCell id="e-ingress-traefik" value="routes to" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#9673a6;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="node" source="ingress" target="traefik">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Traefik to service -->
+        <mxCell id="e-traefik-service" value="host / path match" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#9673a6;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="node" source="traefik" target="service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Service to pods (fan-out) -->
+        <mxCell id="e-service-pod1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#9673a6;fontSize=10;exitX=0.15;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="node" source="service" target="pod1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-service-pod2" value="kube-proxy&#160;balances" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#9673a6;fontSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="node" source="service" target="pod2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-service-pod3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#9673a6;fontSize=10;exitX=0.85;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="node" source="service" target="pod3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- API server to kubelet -->
+        <mxCell id="e-api-kubelet" value="desired state ⇄ status" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#666666;fontSize=11;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="cluster" source="apiserver" target="kubelet">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- etcd to api server -->
+        <mxCell id="e-etcd-api" value="state" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#6c8ebf;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="cp" source="etcd" target="apiserver">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GHCR to containerd -->
+        <mxCell id="e-ghcr-containerd" value="image pull (ghcr-secret)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#d79b00;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ghcr" target="containerd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ConfigMap to pods -->
+        <mxCell id="e-cm-pods" value="envFrom: configMapRef" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#b85450;fontSize=10;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="node" source="configmap" target="pod1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Secret to pods -->
+        <mxCell id="e-secret-pods" value="envFrom: secretRef" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=1.5;strokeColor=#b85450;fontSize=10;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="node" source="secret" target="pod3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
