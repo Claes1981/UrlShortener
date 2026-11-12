@@ -34,6 +34,10 @@ Full documentation: [docs/TUTORIAL.md](docs/TUTORIAL.md) — the endpoints, loca
    ```
 A green run of the pipeline: [bump beacon to version 5](https://github.com/Claes1981/UrlShortener/actions/runs/42523216122)
 
+## Architecture
+
+![Beacon on AKS — control plane and node](docs/architecture.png)
+
 ## Repository layout
 
 ```
