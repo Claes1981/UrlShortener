@@ -38,6 +38,17 @@ A green run of the pipeline: [bump beacon to version 5](https://github.com/Claes
 
 ![Beacon on AKS — control plane and node](docs/architecture.png)
 
+The API server is the only way in from the outside to the Cluster, so all traffic from the outside goes here first. The Scheduler picks a node for the Requests with sufficient resources.
+The Kubelet is sort of an orchestrator for the Node, as it asks the API server what to run and then start the container in the Node.
+
+The `kubectl apply` command to an already running Pod doesn't change that Pod, you would need to also run `kubectl rollout restart` for the changes to take effect.
+
+### How traffic gets in
+
+The ingress controller that runs in the cluster is **Traefik** (in the `traefik` namespace; the Ingress points to it with `ingressClassName: traefik`). Traefik is exposed through its own LoadBalancer service, which gives the cluster its single public IP. The Ingress `beacon` tells Traefik to send all requests for the path `/` to the ClusterIP service `beacon`, and kube-proxy delivers each request to one of the three pods.
+
+An Ingress is needed on top of a Service because a ClusterIP service is only reachable from inside the cluster. Exposing the service directly would mean a NodePort on every node, or a separate public LoadBalancer IP per service — and neither can route by host or path or terminate TLS. An Ingress gives one public entry point that can route to many services; the object itself is only a set of rules, which the controller (Traefik) watches and applies.
+
 ## Repository layout
 
 ```
