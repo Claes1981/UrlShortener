@@ -52,13 +52,13 @@
         <mxCell id="deployment" value="Deployment beacon — replicas: 3, namespace: default" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="node">
           <mxGeometry x="20" y="375" width="460" height="35" as="geometry" />
         </mxCell>
-        <mxCell id="pod1" value="beacon pod 1&#10;image: ghcr.io/claes1981/beacon:543f4fa&#10;port 8080" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="node">
+        <mxCell id="pod1" value="beacon pod 1&#10;ghcr.io/claes1981/&#10;beacon:543f4fa&#10;port 8080" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;align=left;spacingLeft=8;" vertex="1" parent="node">
           <mxGeometry x="20" y="440" width="140" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="pod2" value="beacon pod 2&#10;image: ghcr.io/claes1981/beacon:543f4fa&#10;port 8080" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="node">
+        <mxCell id="pod2" value="beacon pod 2&#10;ghcr.io/claes1981/&#10;beacon:543f4fa&#10;port 8080" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;align=left;spacingLeft=8;" vertex="1" parent="node">
           <mxGeometry x="180" y="440" width="140" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="pod3" value="beacon pod 3&#10;image: ghcr.io/claes1981/beacon:543f4fa&#10;port 8080" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="node">
+        <mxCell id="pod3" value="beacon pod 3&#10;ghcr.io/claes1981/&#10;beacon:543f4fa&#10;port 8080" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;align=left;spacingLeft=8;" vertex="1" parent="node">
           <mxGeometry x="340" y="440" width="140" height="90" as="geometry" />
         </mxCell>
         <mxCell id="cmbox" value="ConfigMap beacon-config&#10;BEACON_ENVIRONMENT&#10;BEACON_MESSAGE" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="node">
@@ -80,8 +80,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e3" value="desired state ⇄ status" style="endArrow=classic;html=1;rounded=0;fontSize=11;" edge="1" parent="cluster" source="apiserver" target="kubelet">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e3" value="state ⇄ status" style="endArrow=classic;html=1;rounded=0;fontSize=11;" edge="1" parent="cluster" source="apiserver" target="kubelet">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint as="offset" y="16" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="e10" value="kube-proxy balances" style="endArrow=classic;html=1;rounded=0;fontSize=11;" edge="1" parent="node" source="service" target="deployment">
           <mxGeometry relative="1" as="geometry" />
