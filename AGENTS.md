@@ -5,7 +5,6 @@
 - Image and all cluster objects are named `beacon` by course convention; the app code stays UrlShortener.
 - Keep the app boring: an API with /health is enough. The course grades Kubernetes, not the app.
 - The K8s deliverable is README.md (architecture + picture + link to a green pipeline run). TUTORIAL.md and FORDJUPNING.md belong to the submitted SkalMoln course — do not extend them.
-- The SkalMoln pipeline push triggers (deploy.yml, deploy-container.yml) are commented out on purpose — do not re-enable until the K8s course is done.
 - Never commit real secrets; docs/secret.example.yaml is the example. The Helm chart owns the cluster objects — no kubectl apply on chart-owned objects.
 - Local cluster: k3d `clo25` (rancher/k3s:v1.36.4-k3s1), port 8080 forwarded; local dev ports http 5001 / https 7001.
 - Commit messages: Herald style (emoji + type(scope): subject, body explains why), English.
