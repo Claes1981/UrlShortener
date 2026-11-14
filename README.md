@@ -38,10 +38,10 @@ A green run of the pipeline: [bump beacon to version 5](https://github.com/Claes
 
 ![Beacon on AKS — control plane and node](docs/architecture.png)
 
-The API server is the only way in from the outside to the Cluster, so all traffic from the outside goes here first. The Scheduler picks a node for the Requests with sufficient resources.
-The Kubelet is sort of an orchestrator for the Node, as it asks the API server what to run and then start the container in the Node.
+The API server is the only way in from the outside to the cluster Control Plane, i e for traffic to manage the cluster. The Scheduler picks a node for the Requests with sufficient resources.
+The Kubelet is sort of an orchestrator for the Node (a machine), as it asks the API server what to run and then start the container in the Node.
 
-The `kubectl apply` command to an already running Pod doesn't change that Pod, you would need to also run `kubectl rollout restart` for the changes to take effect.
+Executing the `kubectl apply` command to an already running Pod doesn't change that Pod, you would need to also run `kubectl rollout restart` for the changes to take effect.
 
 ### How traffic gets in
 
