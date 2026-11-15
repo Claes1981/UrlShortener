@@ -13,6 +13,13 @@ The same app, containerized: the pipeline builds the image and pushes it to GitH
 
 ### How to run it
 
+0. On an AKS cluster, install the Traefik ingress controller first — k3s/k3d bundle it by default, so you can skip this locally:
+
+   ```bash
+   helm install traefik traefik --namespace traefik \
+     --create-namespace --version 41.6.1
+   ```
+
 1. Create the pull secret, with a GitHub token that has only `read:packages`. The first line waits for you to
    paste the token:
 
@@ -50,7 +57,7 @@ Executing the `kubectl apply` command to an already running Pod doesn't change t
 
 ### How traffic gets in
 
-The ingress controller that runs in the cluster is **Traefik** (in the `traefik` namespace; the Ingress points to it with `ingressClassName: traefik`). Traefik is exposed through its own LoadBalancer service, which gives the cluster its single public IP. The Ingress `beacon` tells Traefik to send all requests for the path `/` to the ClusterIP service `beacon`, and kube-proxy delivers each request to one of the three pods.
+The ingress controller that runs in the cluster is **Traefik** — installed separately on AKS, bundled on k3s (in the `traefik` namespace; the Ingress points to it with `ingressClassName: traefik`). Traefik is exposed through its own LoadBalancer service, which gives the cluster its single public IP. The Ingress `beacon` tells Traefik to send all requests for the path `/` to the ClusterIP service `beacon`, and kube-proxy delivers each request to one of the three pods.
 
 An Ingress is needed on top of a Service because a ClusterIP service is only reachable from inside the cluster. Exposing the service directly would mean a NodePort on every node, or a separate public LoadBalancer IP per service — and neither can route by host or path or terminate TLS (Transport Layer Security). An Ingress gives one public entry point that can route to many services; the object itself is only a set of rules, which the controller (Traefik) watches and applies.
 
