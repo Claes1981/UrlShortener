@@ -39,7 +39,7 @@ The same app, containerized: the pipeline builds the image and pushes it to GitH
      --from-literal=BEACON_API_KEY='your-key'
    ```
 
-3. Install the chart:
+3. Install the chart (uses the `imageTag` from `values.yaml`):
 
    ```bash
    helm upgrade --install beacon ./charts/beacon
@@ -50,10 +50,10 @@ A green run of the pipeline: [bump beacon to version 5](https://github.com/Claes
 
 ![Beacon on AKS — control plane and node](docs/architecture.png)
 
-The API server is the only way in from the outside to the cluster Control Plane, i e for traffic to manage the cluster. The Scheduler picks a node for the Requests with sufficient resources.
-The Kubelet is sort of an orchestrator for the Node (a machine), as it asks the API server what to run and then start the container in the Node.
+The API server is the only way in from the outside to the cluster Control Plane, i.e. for traffic to manage the cluster. The Scheduler picks a node for the Requests with sufficient resources.
+The Kubelet is sort of an orchestrator for the Node (a machine), as it asks the API server what to run and then starts the container on the Node.
 
-Executing the `kubectl apply` command to an already running Pod doesn't change that Pod, you would need to also run `kubectl rollout restart` for the changes to take effect.
+What happens when executing the `kubectl apply` command to an already running Pod depends on what you changed. If you change the deployment, the Pods will be updated automatically on `kubectl apply`. However, if you only change the ConfigMap, you would need to also run `kubectl rollout restart` for the changes to take effect.
 
 ### How traffic gets in
 
